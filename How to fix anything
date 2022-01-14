@@ -1,0 +1,173 @@
+#include <LiquidCrystal.h>
+
+int rs = 14;
+int en = 15;
+int d4 = 16;
+int d5 = 17;
+int d6 = 18;
+int d7 = 19;
+int button1 = 21;
+int button2 = 22;
+int Contrast = 300;
+int dt = 100;
+int buttonCounter1 = 0;
+int buttonCounter2 = 0;
+int buttonState1 = 0;
+int buttonState2 = 0;
+int lastButtonState1 = 0;
+int lastButtonState2 = 0;
+int screenCounter;
+int decisionV;
+
+String msg1 = "Does it move?   ";
+String msg2 = "Yes           No";
+String msg3 = "Should it?   ";
+String msg4 = "No problem then!";
+String msg5 = "Use Duct Tape!  ";
+String msg6 = "Use WD40!       ";
+
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  pinMode(button1, INPUT);
+  pinMode(button2, INPUT);
+  
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  
+buttonState1 = digitalRead(button1);
+buttonState2 = digitalRead(button2);
+
+if(buttonCounter1 == 0 && buttonCounter2 == 0){ 
+  screenCounter = 1;
+
+}
+if (screenCounter == 1){
+    lcd.setCursor(0,0);
+    lcd.print(msg1);
+    lcd.setCursor(0,1);
+    lcd.print(msg2);
+    
+}
+if (buttonState1 != lastButtonState1) {
+  if(buttonState1 == 1){
+  buttonCounter1 ++;
+}
+}
+if (buttonState2 != lastButtonState2) {
+  if(buttonState2 == 1){
+  buttonCounter2 ++;
+  }
+}
+lastButtonState1 = buttonState1;
+lastButtonState2 = buttonState2;
+
+
+
+
+
+if (buttonCounter1 == 1 && buttonCounter2 == 0){
+  decisionV = 1;
+}
+if (buttonCounter1 == 0 && buttonCounter2 == 1){
+  decisionV = 2;
+}
+if(buttonCounter1 == 1 || buttonCounter2 == 1){
+  screenCounter = 2;
+  }
+
+  
+if (screenCounter == 2){
+    lcd.setCursor(0,0);
+    lcd.print(msg3);
+    lcd.setCursor(0,1);
+    lcd.print(msg2);
+   }
+   
+if(buttonCounter1== 2 && buttonCounter2 == 0){
+  screenCounter = 3;
+  }
+  if (screenCounter == 3){
+  lcd.setCursor(0,0);
+    lcd.print(msg4);
+   
+  }
+
+if(buttonCounter1 == 0 || buttonCounter2 == 1){
+  screenCounter = 2;
+  }
+  if(buttonCounter1== 0 && buttonCounter2 == 2){
+  screenCounter = 3;
+  }
+
+if(buttonCounter1== 1 && buttonCounter2 == 1){
+  if(decisionV = 1){ 
+  screenCounter = 4;
+  }
+  }
+  if (screenCounter == 4){ 
+  lcd.setCursor(0,0);
+    lcd.print(msg5);
+  }
+if(buttonCounter1== 1 && buttonCounter2 == 1){
+    if(decisionV = 2){
+    screenCounter = 5;
+    }
+}
+    else{
+      decisionV = 0;
+    }
+  
+  if (screenCounter == 5){ 
+  lcd.setCursor(0,0);
+    lcd.print(msg6);
+    
+  }
+  
+  if(buttonCounter1== 3 && buttonCounter2 == 0){
+  screenCounter = 1;
+  buttonCounter1 = 0;
+  buttonCounter2 = 0;
+  decisionV = 0;
+  }
+  if(buttonCounter1== 2 && buttonCounter2 == 1){
+  screenCounter = 1;
+  buttonCounter1 = 0;
+  buttonCounter2 = 0;
+  decisionV = 0;
+  }
+  if(buttonCounter1== 1 && buttonCounter2 == 2){
+  screenCounter = 1;
+  buttonCounter1 = 0;
+  buttonCounter2 = 0;
+  decisionV = 0;
+  }
+  if(buttonCounter1== 0 && buttonCounter2 == 3){
+  screenCounter = 1;
+  buttonCounter1 = 0;
+  buttonCounter2 = 0;
+  decisionV = 0;
+  } 
+  
+  
+  Serial.print("button 1: ");
+  Serial.println(buttonState1);
+  Serial.print("counter 1: ");
+  Serial.println(buttonCounter1);
+  Serial.print("button 2: ");
+  Serial.println(buttonState2);
+  Serial.print("counter 2: ");
+  Serial.println(buttonCounter2);
+  Serial.print("screen number: ");
+  Serial.println(screenCounter);
+  Serial.print("decision: ");
+  Serial.println(decisionV);
+  
+  delay(dt);
+
+}
