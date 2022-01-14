@@ -17,7 +17,7 @@ int buttonState2 = 0;
 int lastButtonState1 = 0;
 int lastButtonState2 = 0;
 int screenCounter;
-int decisionV;
+int decisionV=0;
 
 String msg1 = "Does it move?   ";
 String msg2 = "Yes           No";
@@ -75,7 +75,7 @@ if (buttonCounter1 == 1 && buttonCounter2 == 0){
   decisionV = 1;
 }
 if (buttonCounter1 == 0 && buttonCounter2 == 1){
-  decisionV = 2;
+ decisionV = 0;
 }
 if(buttonCounter1 == 1 || buttonCounter2 == 1){
   screenCounter = 2;
@@ -88,6 +88,7 @@ if (screenCounter == 2){
     lcd.setCursor(0,1);
     lcd.print(msg2);
    }
+   
    
 if(buttonCounter1== 2 && buttonCounter2 == 0){
   screenCounter = 3;
@@ -106,27 +107,24 @@ if(buttonCounter1 == 0 || buttonCounter2 == 1){
   }
 
 if(buttonCounter1== 1 && buttonCounter2 == 1){
-  if(decisionV = 1){ 
-  screenCounter = 4;
-  }
-  }
+    if(decisionV = 0){
+     screenCounter = 5;
+    }
+    if(decisionV = 1){ 
+    screenCounter = 4;
+     }
+  
+       } 
+ 
+    
   if (screenCounter == 4){ 
   lcd.setCursor(0,0);
     lcd.print(msg5);
   }
-if(buttonCounter1== 1 && buttonCounter2 == 1){
-    if(decisionV = 2){
-    screenCounter = 5;
-    }
-}
-    else{
-      decisionV = 0;
-    }
   
   if (screenCounter == 5){ 
   lcd.setCursor(0,0);
-    lcd.print(msg6);
-    
+    lcd.print(msg6);    
   }
   
   if(buttonCounter1== 3 && buttonCounter2 == 0){
